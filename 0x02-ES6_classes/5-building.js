@@ -1,5 +1,11 @@
 export default class Building {
   constructor(sqft) {
+    if (this.constructor !== Building) {
+      const props = Object.getOwnPropertyNames(this.constructor.prototype);
+      if (!props.find((e) => e === 'evacuationWarningMessage')) {
+        throw new Error('Class extending Building must override evacuationWarningMessage');
+      }
+    }
     if (typeof sqft === 'number') {
       this._sqft = sqft;
     } else {
@@ -10,11 +16,5 @@ export default class Building {
   // Getter for _sqft
   get sqft() {
     return this._sqft;
-  }
-
-  // Abstract method must be overriden in subclasses
-  // eslint-disable-next-line class-methods-use-this
-  evacuationWarningMessage() {
-    throw new Error('Class extending Building must override evacuationWarningMessage');
   }
 }
