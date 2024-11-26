@@ -25,7 +25,7 @@ const readline = require('readline');
 // Create a readline interface
 const rl = readline.createInterface({
   input: process.stdin,
-  output: process.stdout
+  output: process.stdout,
 });
 
 // Ask for the user's name
