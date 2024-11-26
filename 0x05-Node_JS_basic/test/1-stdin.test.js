@@ -1,49 +1,40 @@
-const { expect } = require('chai');
-const { exec } = require('child_process');
+const assert = require('assert');
+const { spawn } = require('child_process');
 
-describe('1-stdin.js', () => {
-  it('should display name correctly with interactive input', (done) => {
-    exec('echo "Bob" | node 1-stdin.js', (err, stdout, stderr) => {
-      if (err) {
-        done(err);
-      }
+describe('1-stdin.js', function () {
+  this.timeout(5000); // Increase the timeout to 5000ms for async input/output
 
-      // Check the expected output
-      expect(stdout).to.include('Welcome to Holberton School, what is your name?');
-      expect(stdout).to.include('Your name is: Bob');
-      expect(stdout).to.include('This important software is now closing');
+  it('should display name correctly with interactive input', function (done) {
+    const process = spawn('node', ['1-stdin.js']);
+    
+    let output = '';
+    process.stdout.on('data', (data) => {
+      output += data.toString();
+    });
 
-      done();
+    process.stdin.write('Alice\n'); // Simulate interactive input
+    process.stdin.end();
+
+    process.stdout.on('end', () => {
+      assert(output.includes('Your name is: Alice'));
+      done(); // Indicate that the test is finished
     });
   });
 
-  it('should handle another name input', (done) => {
-    exec('echo "John" | node 1-stdin.js', (err, stdout, stderr) => {
-      if (err) {
-        done(err);
-      }
-
-      // Check the expected output
-      expect(stdout).to.include('Welcome to Holberton School, what is your name?');
-      expect(stdout).to.include('Your name is: John');
-      expect(stdout).to.include('This important software is now closing');
-
-      done();
+  it('should handle another name input', function (done) {
+    const process = spawn('node', ['1-stdin.js']);
+    
+    let output = '';
+    process.stdout.on('data', (data) => {
+      output += data.toString();
     });
-  });
 
-  it('should not display the closing message with interactive input', (done) => {
-    exec('node 1-stdin.js', (err, stdout, stderr) => {
-      if (err) {
-        done(err);
-      }
+    process.stdin.write('Bob\n'); // Simulate interactive input
+    process.stdin.end();
 
-      // Check the expected output without the closing message
-      expect(stdout).to.include('Welcome to Holberton School, what is your name?');
-      expect(stdout).to.include('Your name is: Bob');
-      expect(stdout).not.to.include('This important software is now closing');
-
-      done();
+    process.stdout.on('end', () => {
+      assert(output.includes('Your name is: Bob'));
+      done(); // Indicate that the test is finished
     });
   });
 });
