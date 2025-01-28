@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "## Description This project focuses on learning how to write effective unit tests in JavaScript using tools such as Mocha, Chai, and Sinon. It also covers integration testing with a small Node.js server and various techniques for testing asynchronous functions.",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "chai": "^5.1.2"
+  },
   "devDependencies": {
     "mocha": "^8.4.0"
   },
